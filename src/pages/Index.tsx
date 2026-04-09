@@ -6,24 +6,98 @@ const PORTFOLIO = [
     id: 1,
     title: "Дубовая маршевая",
     desc: "Частный дом, Подмосковье",
-    img: "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/ffb6c89b-0ffc-4d48-b9c2-678dc5123ef3.jpg",
     year: "2024",
+    images: [
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/ffb6c89b-0ffc-4d48-b9c2-678dc5123ef3.jpg",
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/6bb68052-3dd9-4be8-91a4-76f9dd6cac69.jpg",
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/d9918d66-03b7-4a84-951a-0cd1827d7665.jpg",
+    ],
   },
   {
     id: 2,
     title: "Спираль с металлом",
     desc: "Таунхаус, Сочи",
-    img: "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/7673b643-8aeb-49a8-9327-04930e389081.jpg",
     year: "2024",
+    images: [
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/7673b643-8aeb-49a8-9327-04930e389081.jpg",
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/2c0464c2-b24f-4318-884a-fd84bf3fce76.jpg",
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/ff4fa933-83ff-48bf-8aa9-af3d021dff64.jpg",
+    ],
   },
   {
     id: 3,
     title: "Консольная со стеклом",
     desc: "Апартаменты, Москва",
-    img: "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/bd4203e8-fcdb-4571-b79b-8b853204e8a7.jpg",
     year: "2023",
+    images: [
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/bd4203e8-fcdb-4571-b79b-8b853204e8a7.jpg",
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/a41544e3-5ee8-4ca1-9051-4256c1f98604.jpg",
+      "https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/20cab88b-1f5b-4b6c-b57a-7fca66191518.jpg",
+    ],
   },
 ];
+
+function PortfolioCard({ item }: { item: typeof PORTFOLIO[0] }) {
+  const [slide, setSlide] = useState(0);
+
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSlide((s) => (s - 1 + item.images.length) % item.images.length);
+  };
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSlide((s) => (s + 1) % item.images.length);
+  };
+
+  return (
+    <div className="portfolio-item group">
+      <div className="relative overflow-hidden aspect-[3/4] bg-muted">
+        {item.images.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt={item.title}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${i === slide ? "opacity-100" : "opacity-0"}`}
+          />
+        ))}
+
+        {/* Arrows */}
+        <button
+          onClick={prev}
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/80 hover:bg-background flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          <Icon name="ChevronLeft" size={16} />
+        </button>
+        <button
+          onClick={next}
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-background/80 hover:bg-background flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
+          <Icon name="ChevronRight" size={16} />
+        </button>
+
+        {/* Dots */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+          {item.images.map((_, i) => (
+            <button
+              key={i}
+              onClick={(e) => { e.stopPropagation(); setSlide(i); }}
+              className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${i === slide ? "bg-background scale-125" : "bg-background/50"}`}
+            />
+          ))}
+        </div>
+
+        {/* Year overlay */}
+        <div className="absolute top-4 right-4">
+          <span className="text-background/70 text-xs tracking-[0.14em]">{item.year}</span>
+        </div>
+      </div>
+      <div className="pt-4">
+        <h3 className="font-display text-lg font-light text-foreground">{item.title}</h3>
+        <p className="text-sm text-muted-foreground mt-0.5">{item.desc}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -205,26 +279,7 @@ export default function Index() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {PORTFOLIO.map((item) => (
-            <div key={item.id} className="portfolio-item group cursor-pointer">
-              <div className="relative overflow-hidden aspect-[3/4] bg-muted">
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out"
-                />
-                <div className="portfolio-overlay absolute inset-0 bg-foreground/60 opacity-0 transition-opacity duration-500 flex items-end p-6">
-                  <div>
-                    <p className="text-background/60 text-xs tracking-[0.14em] uppercase mb-1">{item.year}</p>
-                    <p className="text-background font-display text-xl font-light">{item.title}</p>
-                    <p className="text-background/70 text-sm mt-1">{item.desc}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="pt-4">
-                <h3 className="font-display text-lg font-light text-foreground">{item.title}</h3>
-                <p className="text-sm text-muted-foreground mt-0.5">{item.desc}</p>
-              </div>
-            </div>
+            <PortfolioCard key={item.id} item={item} />
           ))}
         </div>
       </section>
