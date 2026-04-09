@@ -89,10 +89,21 @@ export default function Index() {
         )}
       </nav>
 
+      {/* BANNER */}
+      <div className="w-full h-[70vh] md:h-screen relative overflow-hidden mt-16">
+        <img
+          src="https://cdn.poehali.dev/projects/e30f204b-61ac-4ac4-b994-089a68e5005a/files/ce3bde6e-6b42-4f78-a118-7c181997b8cb.jpg"
+          alt="Лестница"
+          className="w-full h-full object-cover animate-fade-in"
+          style={{ opacity: 0, animationFillMode: "forwards" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-background/60" />
+      </div>
+
       {/* HERO */}
       <section
         id="hero"
-        className="min-h-screen flex flex-col justify-end pb-20 pt-32 px-6 md:px-16 max-w-6xl mx-auto"
+        className="flex flex-col pb-20 pt-16 px-6 md:px-16 max-w-6xl mx-auto"
       >
         <div className="animate-fade-up" style={{ opacity: 0, animationFillMode: "forwards" }}>
           <p className="text-xs tracking-[0.22em] uppercase text-muted-foreground mb-6">
