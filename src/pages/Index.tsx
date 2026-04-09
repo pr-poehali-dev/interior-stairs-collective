@@ -43,7 +43,7 @@ export default function Index() {
             onClick={() => scrollTo("hero")}
             className="font-display text-xl font-light tracking-widest uppercase text-foreground"
           >
-            Артель Лестниц
+            Stair House
           </button>
 
           <div className="hidden md:flex items-center gap-10">
@@ -315,7 +315,7 @@ export default function Index() {
       <footer className="border-t border-border px-6 md:px-16 py-8 max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <span className="font-display text-base tracking-widest uppercase text-muted-foreground">
-            Артель Лестниц
+            Stair House
           </span>
           <p className="text-xs text-muted-foreground/50">
             © 2008–2026 · Все права защищены
